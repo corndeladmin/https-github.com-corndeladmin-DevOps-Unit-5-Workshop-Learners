@@ -7,3 +7,27 @@ jobs:
     runs-on: ubuntu-latest # Sets the build environment a machine with the latest Ubuntu installed
     steps:
       - uses: actions/checkout@v4 # Adds a step to checkout the repository code
+
+      - name: Install latest .NET SDK
+        uses: Elskom/setup-latest-dotnet@main
+
+      - name: Restore, Build, test, and pack
+        uses: Elskom/build-dotnet@main
+        with:
+          TEST: true
+          PACK: false
+
+      # - name: Build the C# code
+      #   run: dotnet build
+
+      # - name: Runs the C# tests
+      #   run:
+
+      # - name: Builds the TypeScript code.
+      #   run:
+
+      # - name: Runs the linter on the TypeScript code.
+      #   run:
+
+      # - name: Runs the TypeScript tests.
+      #   run:
