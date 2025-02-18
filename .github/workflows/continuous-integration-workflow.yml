@@ -22,14 +22,20 @@ jobs:
       - name: Run C# tests
         run: dotnet test
 
-      # - name: Runs the C# tests
-      #   run:
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
-      # - name: Builds the TypeScript code.
-      #   run:
+      - name: Install dependencies (TypeScript)
+        run: npm install
 
-      # - name: Runs the linter on the TypeScript code.
-      #   run:
+      - name: Build TypeScript code
+        run: npm run build
 
-      # - name: Runs the TypeScript tests.
-      #   run:
+      - name: Run TypeScript linter
+        run: npm run lint
+
+      - name: Run TypeScript tests
+        run: npm test
+
