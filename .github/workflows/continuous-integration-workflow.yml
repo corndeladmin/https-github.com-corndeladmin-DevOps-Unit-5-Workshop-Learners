@@ -26,6 +26,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: 'npm'
+          cache-dependency-path: ./DotnetTemplate.Web/package-lock.json
 
       - name: Install dependencies (TypeScript)
         run: npm install
