@@ -8,17 +8,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4 # Adds a step to checkout the repository code
 
-      - name: Install latest .NET SDK
-        uses: Elskom/setup-latest-dotnet@main
-
-      - name: Restore, Build, test, and pack
-        uses: Elskom/build-dotnet@main
+      - name: Set up .NET
+        uses: xt0rted/setup-dotnet@v1.0.0
         with:
-          TEST: true
-          PACK: false
+          dotnet-version: 8.0
 
-      # - name: Build the C# code
-      #   run: dotnet build
+      - name: Restore dependencies (C#)
+        run: dotnet restore
+
+      - name: Build C# code
+        run: dotnet build
+
+      - name: Run C# tests
+        run: dotnet test
 
       # - name: Runs the C# tests
       #   run:
