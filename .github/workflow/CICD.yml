@@ -22,6 +22,10 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: '8.0.x'  # Specify the .NET 8.0 version you're using (this will install the latest .NET 8.0 version)
+    
+    - name: Search for package.json
+      run: find /home/runner/work/DevOps-Unit-5-Workshop/DevOps-Unit-5-Workshop/ -name "package.json"
+      
 
     # Step 3: Restore C# dependencies
     - name: Restore .NET dependencies
