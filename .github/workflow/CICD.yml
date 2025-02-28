@@ -1,0 +1,61 @@
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # You can change this to `windows-latest` or `macos-latest` depending on your environment
+
+    steps:
+    # Step 1: Check out the code
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Step 2: Set up .NET 8.0 SD
+    - name: Set up .NET 8.0
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '8.0.x'  # Specify the .NET 8.0 version you're using (this will install the latest .NET 8.0 version)
+    
+    - name: Search for package.json
+      run: find /home/runner/work/DevOps-Unit-5-Workshop/DevOps-Unit-5-Workshop/ -name "package.json"
+      
+    # Step 3: Restore C# dependencies
+    - name: Restore .NET dependencies
+      run: dotnet restore
+
+    # Step 4: Build C# code
+    - name: Build .NET project
+      run: dotnet build --configuration Release
+
+    # Step 5: Run C# tests
+    - name: Run .NET tests
+      run: dotnet test --configuration Release --no-build --verbosity normal
+
+    # Step 6: Set up Node.js for TypeScript
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'  # Specify the Node.js version you want to use
+
+    # Step 7: Install Node.js dependencies
+    - name: Install dependencies (npm)
+      run: npm install
+
+    # Step 8: Build TypeScript code
+    - name: Build TypeScript project
+      run: npm run build  # Make sure this command is defined in your package.json
+
+    # Step 9: Run TypeScript linter (Assuming you have ESLint configured)
+    - name: Run TypeScript linter
+      run: npm run lint  # Make sure this command is defined in your package.json
+
+    # Step 10: Run TypeScript tests (Assuming you are using a test framework like Jest)
+    - name: Run TypeScript tests
+      run: npm test  # Make sure this command is defined in your package.json
