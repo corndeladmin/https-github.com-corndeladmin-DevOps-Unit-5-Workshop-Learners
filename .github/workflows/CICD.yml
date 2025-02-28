@@ -1,14 +1,58 @@
-name: Continuous Integration
-on: [push]
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
-    name: Build and test
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
+    runs-on: ubuntu-latest  # You can change this to `windows-latest` or `macos-latest` depending on your environment
 
-    - name: Hello world       # Name of step
-      uses: actions/hello-world-javascript-action@v1.1 # Name of the action. This uses https://github.com/actions/hello-world-javascript-action
-      with:                                            # This section is needed if you need to pass arguments to the action
-        who-to-greet: 'Mona the Octocat'
+    steps:
+    # Step 1: Check out the code
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Step 2: Set up .NET
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '6.0'  # Specify the .NET version you're using (e.g., '6.0', '7.0')
+
+    # Step 3: Restore C# dependencies
+    - name: Restore .NET dependencies
+      run: dotnet restore
+
+    # Step 4: Build C# code
+    - name: Build .NET project
+      run: dotnet build --configuration Release
+
+    # Step 5: Run C# tests
+    - name: Run .NET tests
+      run: dotnet test --configuration Release --no-build --verbosity normal
+
+    # Step 6: Set up Node.js for TypeScript
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'  # Specify the Node.js version you want to use
+
+    # Step 7: Install Node.js dependencies
+    - name: Install dependencies (npm)
+      run: npm install
+
+    # Step 8: Build TypeScript code
+    - name: Build TypeScript project
+      run: npm run build  # Make sure this command is defined in your package.json
+
+    # Step 9: Run TypeScript linter (Assuming you have ESLint configured)
+    - name: Run TypeScript linter
+      run: npm run lint  # Make sure this command is defined in your package.json
+
+    # Step 10: Run TypeScript tests (Assuming you are using a test framework like Jest)
+    - name: Run TypeScript tests
+      run: npm test  # Make sure this command is defined in your package.json
